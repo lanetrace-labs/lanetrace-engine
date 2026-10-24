@@ -1,0 +1,21 @@
+name: Footprint graph invariants
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: lanetrace-labs/lanetrace-engine
+          path: lanetrace-engine
+          ref: ${{ github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          repository: lanetrace-labs/lanetrace-fixtures
+          path: lanetrace-fixtures
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node --test lanetrace-engine/test.mjs
